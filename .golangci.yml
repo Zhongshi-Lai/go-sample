@@ -1,0 +1,13 @@
+linters:
+  enable:
+    - golint
+    - goimports
+    - govet
+
+run:
+  skip-dirs:
+    - cmd/script/utils
+    - cmd/script/temp
+    - /usr/local/Cellar/go
+
+  skip-dirs-use-default: true
