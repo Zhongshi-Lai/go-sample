@@ -1,9 +1,5 @@
 package errordeal
 
-import (
-	"github.com/pkg/errors"
-)
-
 type ToolErr struct {
 	ToolCode int
 	ToolMsg  string
@@ -43,13 +39,6 @@ func (te *ToolErr) AddDetail(innerErr error) error {
 	}
 }
 
-func NewSimpleToolErr(err error) error {
-	// 通常情况下,直接使用这个函数即可
-	// 不设定code,msg,在代码里面直接使用 NewSimpleToolErr(err)
-	return &ToolErr{
-		InnerErr: errors.New(err.Error()),
-	}
-}
 
 func NewToolErrWithOpt(opts ...ToolErrOption) error {
 	// 当你需要为toolError 设定一个code和msg的时候,使用这个函数
