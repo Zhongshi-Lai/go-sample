@@ -6,7 +6,8 @@
 3. error 要能区分出来是业务异常还是第三方库/基础组件 异常
 4. 需要有一个专职处理error的middleware,或者在日志的middleware里面处理error
 5. middleware接受到error之后,会对具体的error类型做一些判断(如果需要),打印error,要求能够打印出trace,能够追溯出根因,能够带上trace_id(链路追踪)
-
+6. error兼容grpc 需要实现 GRPCStatus()
+7. error兼容http 需要能够 反应http状态码,并且含有error自己的唯一编码
 
 
 ## 业务error

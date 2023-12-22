@@ -1,0 +1,10 @@
+syntax = "proto3";
+package robot_web.v1;
+
+
+message PayPalResultCaptureResp {
+  // 支付订单号
+  string tradeOrderNum = 1 ;
+  // 支付状态
+  string status = 2 ;
+}

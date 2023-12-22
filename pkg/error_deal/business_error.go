@@ -1,10 +1,14 @@
 package errordeal
 
+
+
 type BizErr struct {
 	BizCode    int
 	BizMessage string
 	InnerErr   error
 }
+
+
 
 func (be *BizErr) Error() string          { return be.Message() }
 func (be *BizErr) Code() int              { return be.BizCode }
