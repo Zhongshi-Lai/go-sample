@@ -16,10 +16,10 @@ const (
 )
 
 type Status struct {
-	Code     int32             `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
-	Reason   string            `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
-	Message  string            `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
-	Metadata map[string]string `protobuf:"bytes,4,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Code     int32             // 错误码，跟 http-status 一致，并且在 grpc 中可以转换成 grpc-status
+	Reason   string            // 错误原因，定义为业务判定错误码
+	Message  string            // 错误信息，为用户可读的信息，可作为用户提示内容
+	Metadata map[string]string // 错误元信息，为错误添加附加可扩展信息
 }
 
 // Error is a status error.
@@ -65,6 +65,12 @@ func (e *Error) GRPCStatus() *status.Status {
 			Metadata: e.Metadata,
 		})
 	return s
+}
+
+func (e *Error) WithCtxTrace(cause error) *Error {
+	err := Clone(e)
+	err.cause = cause
+	return err
 }
 
 // New returns an error object for the code, message.

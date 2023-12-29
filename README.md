@@ -25,6 +25,3 @@
 1. gin v1.7.7 ; go 1.16的最后一个版本,再向上需要go 1.17
 2. grpc v1.57.2  go 1.16的最后一个版本,再向上需要go 1.19
 
-google.golang.org/protobuf v1.30.0
-github.com/golang/protobuf v1.5.3
-google.golang.org/genproto v0.0.0-20230526161137-0005af68ea54 // indirect

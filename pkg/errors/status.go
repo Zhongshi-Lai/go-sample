@@ -7,10 +7,10 @@ import (
 )
 
 const (
-	// ClientClosed is non-standard http status code,
+	// ClientClosedHTTPCode is non-standard http status code,
 	// which defined by nginx.
 	// https://httpstatus.in/499/
-	ClientClosed = 499
+	ClientClosedHTTPCode = 499
 )
 
 // Converter is a status converter.
@@ -53,7 +53,7 @@ func (c statusConverter) ToGRPCCode(code int) codes.Code {
 		return codes.Unavailable
 	case http.StatusGatewayTimeout:
 		return codes.DeadlineExceeded
-	case ClientClosed:
+	case ClientClosedHTTPCode:
 		return codes.Canceled
 	}
 	return codes.Unknown
@@ -66,7 +66,7 @@ func (c statusConverter) FromGRPCCode(code codes.Code) int {
 	case codes.OK:
 		return http.StatusOK
 	case codes.Canceled:
-		return ClientClosed
+		return ClientClosedHTTPCode
 	case codes.Unknown:
 		return http.StatusInternalServerError
 	case codes.InvalidArgument:
