@@ -6,6 +6,8 @@
     - 如果supervisor任务不打二进制包,直接运行代码,留存superviosr配置文件即可, 更新supervisor只需要拉代码,重启脚本即可
     - 如果supervisor任务打成二进制包,就麻烦了,如何判断二进制包基于哪个git版本呢
 
+2. 代码版本管理,以及二进制文件如何查看是由哪个版本产生的
+
 ## 参考文献
 
 1. 项目文件夹命名 <https://github.com/golang-standards/project-layout/blob/master/README_zh-CN.md>
