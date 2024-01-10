@@ -1,3 +1,6 @@
-[http]
+[serverMode]
+    debug = true
+
+[httpServerConf]
     port = 8063
     ip = "0.0.0.0"

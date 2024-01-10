@@ -2,8 +2,12 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	"go-sample/pkg/logger"
 	"net/http"
+	"os"
+	"os/signal"
+	"runtime"
+	"syscall"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -14,6 +18,36 @@ var (
 	ginPort  int64
 )
 
+func readAllConf() {
+	// server conf
+	viper.AddConfigPath(confPath)
+	viper.SetConfigName("server")
+	viper.SetConfigType("toml")
+	if err := viper.ReadInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			// Config file not found; ignore error if desired
+			panic("conf file not found")
+		} else {
+			// Config file was found but another error was produced
+			panic(err)
+		}
+	}
+
+	// second file must use viper.MergeInConfig(); otherwise it will lose first conf content;
+	// log conf
+	viper.SetConfigName("log")
+	viper.SetConfigType("toml")
+	if err := viper.MergeInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			// Config file not found; ignore error if desired
+			panic("conf file not found")
+		} else {
+			// Config file was found but another error was produced
+			panic(err)
+		}
+	}
+}
+
 func main() {
 
 	// read config path from cmd flag
@@ -22,32 +56,24 @@ func main() {
 
 	flag.Parse()
 
-	// read port from
-
 	if confPath == "" {
 		panic("empty conf path")
 	}
-
 	if ginPort == 0 {
 		panic("empty gin port")
 	}
 
-	viper.AddConfigPath(confPath)
-	viper.SetConfigName("server")
-	viper.SetConfigType("toml")
+	readAllConf()
 
-	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			// Config file not found; ignore error if desired
-			panic("file not found")
-		} else {
-			// Config file was found but another error was produced
-			panic(err)
-		}
-	}
+	// init logger
+	logger.New(&logger.LogConf{
+		Name:  viper.GetString("serverLog.name"),
+		Path:  viper.GetString("serverLog.path"),
+		Debug: viper.GetBool("serverMode.debug"),
+	})
 
-	fmt.Println(viper.AllKeys())
-	fmt.Println(viper.Get("http.port"))
+	// di init
+	// in di init ,you should start the server
 
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
@@ -55,6 +81,36 @@ func main() {
 			"message": "pong",
 		})
 	})
-	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+
+	gin.Default()
+
+	// listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	if err := r.Run(); err != nil {
+		panic("run http server error")
+	}
+
+	// all close func
+	// like mysql-pool
+
+	// set max cpu
+	runtime.GOMAXPROCS(runtime.NumCPU())
+
+	sysSignalChan := make(chan os.Signal, 1)
+	signal.Notify(sysSignalChan, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+
+	for {
+		s := <-sysSignalChan
+		//zlog.Log.Sugar().Infof("get a signal %s", s.String())
+		switch s {
+		case syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT:
+			//closeFunc()
+			//zlog.Log.Sugar().Infof("%s exit", AppName)
+			//time.Sleep(time.Second)
+			return
+		case syscall.SIGHUP:
+		default:
+			return
+		}
+	}
 
 }
