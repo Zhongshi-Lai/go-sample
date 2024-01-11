@@ -2,14 +2,13 @@ package main
 
 import (
 	"flag"
+	"go-sample/internal/di"
 	"go-sample/pkg/logger"
-	"net/http"
 	"os"
 	"os/signal"
 	"runtime"
 	"syscall"
 
-	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
 
@@ -75,19 +74,12 @@ func main() {
 	// di init
 	// in di init ,you should start the server
 
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
-
-	gin.Default()
-
-	// listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
-	if err := r.Run(); err != nil {
-		panic("run http server error")
+	_, closeFunc, err := di.InitializeApp()
+	if err != nil {
+		panic(err)
 	}
+
+	closeFunc()
 
 	// all close func
 	// like mysql-pool

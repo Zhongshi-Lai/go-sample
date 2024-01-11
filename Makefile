@@ -1,6 +1,3 @@
-
-
-
 swagger:
 	@./tools/swagger/swag init --parseDependency --parseInternal
 
@@ -23,8 +20,12 @@ GOLDFLAGS += -X main.Version=$(VERSION)
 GOLDFLAGS += -X main.Buildtime=$(BUILDTIME)
 GOFLAGS = -ldflags "$(GOLDFLAGS)"
 
-run: build
-	./mybinary
+#run: build
+#	./mybinary
 
 build:
 	go build -o mybinary $(GOFLAGS) .
+
+
+runserver:
+	go run cmd/classic_jin_http_server/main.go --conf=./config/test --ginPort=8063

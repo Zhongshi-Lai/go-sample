@@ -16,7 +16,7 @@
 4. 
 
 ## 使用的工具
-1. goimports `go get golang.org/x/tools/cmd/goimports@v0.14.0`
+1. goimports `go install golang.org/x/tools/cmd/goimports@v0.14.0`
 2. golangci-lint `curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.42.0`
 3. gmchart `go install github.com/PaulXu-cn/go-mod-graph-chart@v0.5.3`
 4. 
@@ -24,6 +24,6 @@
 
 ## 使用的第三方库
 
-1. gin v1.7.7 ; go 1.16的最后一个版本,再向上需要go 1.17
-2. grpc v1.57.2  go 1.16的最后一个版本,再向上需要go 1.19
-
+1. gin
+2. grpc
+3. grpc-gateway   https://github.com/grpc-ecosystem/grpc-gateway

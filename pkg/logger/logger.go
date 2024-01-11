@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"context"
 	"os"
 
 	"go.uber.org/zap"
@@ -13,6 +14,8 @@ type LogConf struct {
 	Path  string
 	Debug bool
 }
+
+var CustomerLogger *zap.Logger
 
 func InitGlobalLogger(name, path string, debug bool) *zap.Logger {
 
@@ -81,10 +84,34 @@ func InitGlobalLogger(name, path string, debug bool) *zap.Logger {
 
 	zap.ReplaceGlobals(logger)
 
+	CustomerLogger = logger
+
 	return logger
 }
 
 func New(conf *LogConf) {
 	InitGlobalLogger(conf.Name, conf.Path, conf.Debug)
 	zap.L().Sugar().Info("hello world my zap logger")
+	zap.L().Sugar().Error("this will be an error")
+
+}
+
+func WithContext(ctx context.Context) *zap.Logger {
+	if CustomerLogger == nil {
+		panic("please init CustomerLogger first")
+	}
+	if ctx == nil {
+		return CustomerLogger
+	}
+
+	// get field from ctx and
+
+	//if md, ok := metadata.FromContext(ctx); ok {
+	//	if li, ok := md[loggerKey]; ok {
+	//		if l, ok := li.(*zap.Logger); ok {
+	//			return l
+	//		}
+	//	}
+	//}
+	return CustomerLogger
 }

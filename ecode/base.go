@@ -9,11 +9,11 @@ type ECode struct {
 var InternalError = ECode{
 	Code:    500,
 	Reason:  "internal_error",
-	Message: "internal server error, please try again later",
+	Message: "internal router error, please try again later",
 }
 
 var DatabaseError = ECode{
 	Code:    500,
 	Reason:  "database_error",
-	Message: "internal server error, please try again later",
+	Message: "internal router error, please try again later",
 }
