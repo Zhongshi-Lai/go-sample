@@ -3,9 +3,14 @@
 
 package di
 
-import "github.com/google/wire"
+import (
+	"go-sample/internal/server"
+	pkgServer "go-sample/pkg/server"
 
-func InitializeApp() (app *GinServerApp, closeFunc func(), err error) {
-	wire.Build(NewAllTools, NewGinServer, NewGinServerApp)
-	return &GinServerApp{}, func() {}, nil
+	"github.com/google/wire"
+)
+
+func InitializeApp() (app *pkgServer.App, closeFunc func(), err error) {
+	wire.Build(server.ProviderSet, NewTools, NewApp)
+	return &pkgServer.App{}, func() {}, nil
 }

@@ -1,8 +1,0 @@
-syntax = "proto3";
-package robot_machine.v1;
-
-
-
-message QueryOrderInfo {
-  string OutTradeNo = 1 ;
-}

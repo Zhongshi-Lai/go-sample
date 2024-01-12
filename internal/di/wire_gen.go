@@ -6,15 +6,21 @@
 
 package di
 
+import (
+	server2 "go-sample/internal/server"
+	"go-sample/pkg/server"
+)
+
 // Injectors from wire.go:
 
-func InitializeApp() (*GinServerApp, func(), error) {
-	engine := NewGinServer()
-	tools := NewAllTools()
-	ginServerApp, err := NewGinServerApp(engine, tools)
+func InitializeApp() (*server.App, func(), error) {
+	engine := server2.NewGinServer()
+	tools := NewTools()
+	grpcServer := server2.NewGRPCServer()
+	app, err := NewApp(engine, tools, grpcServer)
 	if err != nil {
 		return nil, nil, err
 	}
-	return ginServerApp, func() {
+	return app, func() {
 	}, nil
 }

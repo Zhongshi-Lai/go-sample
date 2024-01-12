@@ -1,15 +1,16 @@
 package di
 
-import "github.com/gin-gonic/gin"
+import (
+	"go-sample/pkg/server"
 
-type GinServerApp struct {
-	GinServer *gin.Engine
-	Tools     *Tools
-}
+	"github.com/gin-gonic/gin"
+	"google.golang.org/grpc"
+)
 
-func NewGinServerApp(ginServer *gin.Engine, tools *Tools) (*GinServerApp, error) {
-	return &GinServerApp{
-		GinServer: ginServer,
-		Tools:     tools,
+func NewApp(ginServer *gin.Engine, tools *server.Tools, grpcServer *grpc.Server) (*server.App, error) {
+	return &server.App{
+		GinServer:  ginServer,
+		Tools:      tools,
+		GRPCServer: grpcServer,
 	}, nil
 }

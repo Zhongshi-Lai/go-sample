@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto.sample.v1;
+option go_package = "sample.v1"; // 生成的代码的包名
+
+import "google/api/annotations.proto";
+
+message StringMessage {
+  string value = 1;
+}
+
+service YourService {
+  rpc Echo(StringMessage) returns (StringMessage) {
+    option(google.api.http) = {
+      post: "/v1/robotWeb/preSellOrderInfo"
+    };
+  }
+}

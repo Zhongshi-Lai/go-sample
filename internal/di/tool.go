@@ -1,9 +1,8 @@
 package di
 
-type Tools struct {
-}
+import "go-sample/pkg/server"
 
-func NewAllTools() *Tools {
+func NewTools() *server.Tools {
 
-	return &Tools{}
+	return &server.Tools{}
 }

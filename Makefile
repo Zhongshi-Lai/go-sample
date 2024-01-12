@@ -26,6 +26,9 @@ GOFLAGS = -ldflags "$(GOLDFLAGS)"
 build:
 	go build -o mybinary $(GOFLAGS) .
 
-
 runserver:
 	go run cmd/classic_jin_http_server/main.go --conf=./config/test --ginPort=8063
+
+di:
+	cd internal/di
+	wire
