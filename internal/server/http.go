@@ -17,10 +17,12 @@ func NewGinServer() *gin.Engine {
 
 	// TODO(laizhongshi): 注册路由
 
-	// listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
-	if err := r.Run(); err != nil {
-		panic("run http router error")
-	}
+	go func() {
+		// listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+		if err := r.Run(); err != nil {
+			panic("run http router error")
+		}
+	}()
 
 	return r
 }

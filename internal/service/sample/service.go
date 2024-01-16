@@ -1,11 +1,15 @@
 package sample
 
-import "go-sample/pkg/server"
+import (
+	sampleV1 "go-sample/api_gen/sample/v1"
+	"go-sample/pkg"
+)
 
-type Service struct {
-	App *server.App
+type YourServiceServer struct {
+	Tools *pkg.Tools
+	sampleV1.UnimplementedYourServiceServer
 }
 
-func NewService(app *server.App) *Service {
-	return &Service{App: app}
+func NewYourServiceServer(tools *pkg.Tools) *YourServiceServer {
+	return &YourServiceServer{Tools: tools}
 }

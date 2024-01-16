@@ -21,4 +21,10 @@ protoc -I . \
     --go-grpc_out ../api_gen --go-grpc_opt paths=source_relative \
     ./sample/v1/sample.proto
 
+
+protoc -I . --grpc-gateway_out ../api_gen \
+    --grpc-gateway_opt paths=source_relative \
+   ./sample/v1/sample.proto
+
+
 ```

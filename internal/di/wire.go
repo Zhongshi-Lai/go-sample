@@ -5,12 +5,27 @@ package di
 
 import (
 	"go-sample/internal/server"
-	pkgServer "go-sample/pkg/server"
+	"go-sample/internal/service"
+	"go-sample/pkg"
 
+	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
+	"google.golang.org/grpc"
 )
 
-func InitializeApp() (app *pkgServer.App, closeFunc func(), err error) {
-	wire.Build(server.ProviderSet, NewTools, NewApp)
-	return &pkgServer.App{}, func() {}, nil
+type App struct {
+	GinServer  *gin.Engine
+	GRPCServer *grpc.Server
+}
+
+func newApp(ginServer *gin.Engine, grpcServer *grpc.Server) (*App, error) {
+	return &App{
+		GinServer:  ginServer,
+		GRPCServer: grpcServer,
+	}, nil
+}
+
+func InitializeApp() (app *App, closeFunc func(), err error) {
+	wire.Build(server.ProviderSet, service.ProviderSet, service.NewAllService, pkg.NewAllTools, newApp)
+	return &App{}, func() {}, nil
 }

@@ -7,20 +7,40 @@
 package di
 
 import (
-	server2 "go-sample/internal/server"
-	"go-sample/pkg/server"
+	"github.com/gin-gonic/gin"
+	"go-sample/internal/server"
+	"go-sample/internal/service"
+	"go-sample/internal/service/sample"
+	"go-sample/pkg"
+	"google.golang.org/grpc"
 )
 
 // Injectors from wire.go:
 
-func InitializeApp() (*server.App, func(), error) {
-	engine := server2.NewGinServer()
-	tools := NewTools()
-	grpcServer := server2.NewGRPCServer()
-	app, err := NewApp(engine, tools, grpcServer)
+func InitializeApp() (*App, func(), error) {
+	engine := server.NewGinServer()
+	tools := pkg.NewAllTools()
+	yourServiceServer := sample.NewYourServiceServer(tools)
+	allService := service.NewAllService(yourServiceServer)
+	grpcServer := server.NewGRPCServer(allService)
+	app, err := newApp(engine, grpcServer)
 	if err != nil {
 		return nil, nil, err
 	}
 	return app, func() {
+	}, nil
+}
+
+// wire.go:
+
+type App struct {
+	GinServer  *gin.Engine
+	GRPCServer *grpc.Server
+}
+
+func newApp(ginServer *gin.Engine, grpcServer *grpc.Server) (*App, error) {
+	return &App{
+		GinServer:  ginServer,
+		GRPCServer: grpcServer,
 	}, nil
 }

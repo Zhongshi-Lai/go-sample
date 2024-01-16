@@ -1,29 +1,12 @@
-# di
+# di 
 
-建立di这个文件夹的核心目的是为了
-存放 
-wire.go wire_gen.go
-如果 wire.go wire_gen.go 和main.go 在一个文件夹
-那么 go run main.go 会报错, undefined: InitializeApp()
-找不到wire_gen.go 的内容
-如果使用 go run . 就可以
-
-找不到 wire_gen.go 的内容的原因可能是
-wire_gen.go 和wire.go 有下面的标签
+编写wire.go文件的时候
+去掉
 //go:build wireinject
 // +build wireinject
 
+才能正常编辑,比如自动import包,检查错误
 
-## 冲突问题
-InitializeApp() 这个方法,出现在
-wire_gen.go 和 wire.go 在一个package内
-但是为什么没报出冲突呢
-就是 wire.go
-需要加标签
+运行wire二进制文件之后,生成wire_gen.go 之后,记得加回去
 
-//go:build wireinject
-// +build wireinject
-
-
-
-todo: server 是否需要放在这里
+wire.go wire_gen.go 如果和main在一个包内,启动 go run main.go会找不到wire_gen.go里面的函数,就单独丢一个包了
