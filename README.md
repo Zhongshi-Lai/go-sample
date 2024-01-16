@@ -38,3 +38,7 @@ google.golang.org/grpc/cmd/protoc-gen-go-grpc
 
 
 go install github.com/google/wire/cmd/wire@latest
+
+
+
+make PROTO_FILE_NAME=./sample/v1/sample.proto proto_gen

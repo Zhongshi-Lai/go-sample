@@ -8,10 +8,10 @@ message StringMessage {
   string value = 1;
 }
 
-service YourService {
+service SampleService {
   rpc Echo(StringMessage) returns (StringMessage) {
     option(google.api.http) = {
-      post: "/v1/robotWeb/preSellOrderInfo"
+      post: "/sample/v1/echo"
     };
   }
 }
