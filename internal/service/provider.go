@@ -7,13 +7,13 @@ import (
 )
 
 // ProviderSet 初始化每个单独的sample.Service
-var ProviderSet = wire.NewSet(sample.NewYourServiceServer)
+var ProviderSet = wire.NewSet(sample.NewService)
 
 // AllService 提供给grpcserver和httpserver进行路由注册
 type AllService struct {
-	YourServiceServer *sample.YourServiceServer
+	SampleService *sample.Service
 }
 
-func NewAllService(yourServiceServer *sample.YourServiceServer) *AllService {
-	return &AllService{YourServiceServer: yourServiceServer}
+func NewAllService(sampleService *sample.Service) *AllService {
+	return &AllService{SampleService: sampleService}
 }

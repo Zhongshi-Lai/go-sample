@@ -23,7 +23,7 @@ func NewGRPCServer(allService *service.AllService) *grpc.Server {
 
 	grpcServer := grpc.NewServer()
 
-	sample_v1.RegisterYourServiceServer(grpcServer, allService.YourServiceServer)
+	sample_v1.RegisterSampleServiceServer(grpcServer, allService.SampleService)
 
 	go func() {
 		if err := grpcServer.Serve(lis); err != nil {

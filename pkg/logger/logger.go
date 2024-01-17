@@ -2,10 +2,12 @@ package logger
 
 import (
 	"context"
+	"log/slog"
 	"os"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"google.golang.org/grpc/metadata"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
@@ -90,10 +92,9 @@ func InitGlobalLogger(name, path string, debug bool) *zap.Logger {
 }
 
 func New(conf *LogConf) {
+	slog.Info("start init log")
 	InitGlobalLogger(conf.Name, conf.Path, conf.Debug)
-	zap.L().Sugar().Info("hello world my zap logger")
-	zap.L().Sugar().Error("this will be an error")
-
+	slog.Info("init log success")
 }
 
 func WithContext(ctx context.Context) *zap.Logger {
@@ -103,6 +104,9 @@ func WithContext(ctx context.Context) *zap.Logger {
 	if ctx == nil {
 		return CustomerLogger
 	}
+
+	// 如果ctx里面,有一个子logger
+	metadata.New()
 
 	// get field from ctx and
 

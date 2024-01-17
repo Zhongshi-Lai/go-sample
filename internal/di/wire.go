@@ -8,24 +8,36 @@ import (
 	"go-sample/internal/service"
 	"go-sample/pkg"
 
-	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"google.golang.org/grpc"
 )
 
-type App struct {
-	GinServer  *gin.Engine
+//type GinApp struct {
+//	GinServer *gin.Engine
+//}
+
+//func newGinApp(ginServer *gin.Engine) (*GinApp, error) {
+//	return &GinApp{
+//		GinServer: ginServer,
+//	}, nil
+//}
+
+//func InitializeGinApp() (app *GinApp, closeFunc func(), err error) {
+//	wire.Build(server.NewGinServer, service.ProviderSet, service.NewAllService, pkg.NewAllTools, newGinApp)
+//	return &GinApp{}, func() {}, nil
+//}
+
+type GRPCApp struct {
 	GRPCServer *grpc.Server
 }
 
-func newApp(ginServer *gin.Engine, grpcServer *grpc.Server) (*App, error) {
-	return &App{
-		GinServer:  ginServer,
+func newGRPCApp(grpcServer *grpc.Server) (*GRPCApp, error) {
+	return &GRPCApp{
 		GRPCServer: grpcServer,
 	}, nil
 }
 
-func InitializeApp() (app *App, closeFunc func(), err error) {
-	wire.Build(server.ProviderSet, service.ProviderSet, service.NewAllService, pkg.NewAllTools, newApp)
-	return &App{}, func() {}, nil
+func InitializeGRPCApp() (app *GRPCApp, closeFunc func(), err error) {
+	wire.Build(server.NewGRPCServer, service.ProviderSet, service.NewAllService, pkg.NewAllTools, newGRPCApp)
+	return &GRPCApp{}, func() {}, nil
 }

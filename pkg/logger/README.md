@@ -30,7 +30,7 @@ ExtraField(),把context里面的所有字段解析成[]zap.Field
 然后使用 NewContext()
 使用metadata.FromContext(ctx),把context里面的metadata(存储自定义字段的玩意,一个map)取出来
 clone 一个zap logger ,丢到metadata
-其实这个时候就已经有
+其实这个时候每个请求里面的子logger 就已经有ctx的一些关键字段了
 
 ``` go
 // With creates a child logger and adds structured context to it. Fields added

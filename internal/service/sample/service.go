@@ -5,11 +5,11 @@ import (
 	"go-sample/pkg"
 )
 
-type YourServiceServer struct {
+type Service struct {
 	Tools *pkg.Tools
-	sampleV1.UnimplementedYourServiceServer
+	sampleV1.UnimplementedSampleServiceServer
 }
 
-func NewYourServiceServer(tools *pkg.Tools) *YourServiceServer {
-	return &YourServiceServer{Tools: tools}
+func NewService(tools *pkg.Tools) *Service {
+	return &Service{Tools: tools}
 }

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"flag"
 	"go-sample/internal/di"
+	"go-sample/pkg/conf"
 	"go-sample/pkg/logger"
 	"os"
 	"os/signal"
@@ -12,57 +12,14 @@ import (
 	"github.com/spf13/viper"
 )
 
-var (
-	confPath string
-	ginPort  int64
-)
-
-func readAllConf() {
-	// server conf
-	viper.AddConfigPath(confPath)
-	viper.SetConfigName("server")
-	viper.SetConfigType("toml")
-	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			// Config file not found; ignore error if desired
-			panic("conf file not found")
-		} else {
-			// Config file was found but another error was produced
-			panic(err)
-		}
-	}
-
-	// second file must use viper.MergeInConfig(); otherwise it will lose first conf content;
-	// log conf
-	viper.SetConfigName("log")
-	viper.SetConfigType("toml")
-	if err := viper.MergeInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			// Config file not found; ignore error if desired
-			panic("conf file not found")
-		} else {
-			// Config file was found but another error was produced
-			panic(err)
-		}
-	}
-}
-
 func main() {
-
-	// read config path from cmd flag
-	flag.StringVar(&confPath, "conf", "", "default config path")
-	flag.Int64Var(&ginPort, "ginPort", 0, "assign gin http server port")
-
-	flag.Parse()
-
-	if confPath == "" {
-		panic("empty conf path")
-	}
-	if ginPort == 0 {
-		panic("empty gin port")
+	// init conf from
+	confFilePath := os.Getenv("GO-SAMPLE-CONF")
+	if confFilePath == "" {
+		panic("empty config path from os env")
 	}
 
-	readAllConf()
+	conf.AppConfInit(confFilePath)
 
 	// init logger
 	logger.New(&logger.LogConf{
@@ -74,7 +31,7 @@ func main() {
 	// di init
 	// in di init ,you should start the server
 
-	_, closeFunc, err := di.InitializeApp()
+	_, closeFunc, err := di.InitializeGRPCApp()
 	if err != nil {
 		panic(err)
 	}
