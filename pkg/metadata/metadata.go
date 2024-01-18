@@ -73,9 +73,6 @@ func (m Metadata) Clone() Metadata {
 	return md
 }
 
-// TODO(laizhongshi): 这里是我最疑问的地方
-// 为什么使用一个 serverMetadataKey{} 作为key,每次NewServerContext()的时候,都去new一个struct?
-// 并且FromServerContext的时候,也new一个serverMetadataKey{} 来作为key 取出metadata?
 type serverMetadataKey struct{}
 
 // NewServerContext creates a new context with client md attached.

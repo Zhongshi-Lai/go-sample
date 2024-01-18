@@ -26,7 +26,7 @@ func runProxy() {
 	// Note: Make sure the gRPC server is running properly and accessible
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err := sampleV1.RegisterYourServiceHandlerFromEndpoint(ctx, mux, ":8064", opts)
+	err := sampleV1.RegisterSampleServiceHandlerFromEndpoint(ctx, mux, ":8064", opts)
 	if err != nil {
 		panic(err)
 	}

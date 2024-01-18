@@ -13,18 +13,14 @@
 
 
 
-#VERSION := $(shell git rev-parse --short HEAD)
-#BUILDTIME := $(shell date -u '+%Y-%m-%dT%H:%M:%SZ')
-#
-#GOLDFLAGS += -X main.Version=$(VERSION)
-#GOLDFLAGS += -X main.Buildtime=$(BUILDTIME)
-#GOFLAGS = -ldflags "$(GOLDFLAGS)"
+
+
+
 #
 ##run: build
 ##	./mybinary
 #
-#build:
-#	go build -o mybinary $(GOFLAGS) .
+
 
 #runserver:
 #	go run cmd/classic_jin_http_server/main.go --conf=./config/test --ginPort=8063
@@ -43,3 +39,15 @@ proto_gen:
 	cd proto && protoc -I . --grpc-gateway_out ../api_gen \
         --grpc-gateway_opt paths=source_relative \
         $(PROTO_FILE_NAME)
+
+
+# build grpc server with git commit hash
+VERSION := $(shell git rev-parse --short HEAD)
+BUILDTIME := $(shell date -u '+%Y-%m-%dT%H:%M:%SZ')
+
+GOLDFLAGS += -X main.Version=$(VERSION)
+GOLDFLAGS += -X main.BuildTime=$(BUILDTIME)
+GOFLAGS = -ldflags "$(GOLDFLAGS)"
+
+build_grpc:
+	cd cmd/mixed_grpc_http_server && go build -o ../../build/cmd/mixed_grpc_http_server/ $(GOFLAGS) .

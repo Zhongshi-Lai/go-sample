@@ -7,7 +7,6 @@ import (
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"google.golang.org/grpc/metadata"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
@@ -106,7 +105,6 @@ func WithContext(ctx context.Context) *zap.Logger {
 	}
 
 	// 如果ctx里面,有一个子logger
-	metadata.New()
 
 	// get field from ctx and
 

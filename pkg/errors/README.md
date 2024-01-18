@@ -15,7 +15,7 @@
 打印日志的时候,打印error 然后再打印根因(因为根因可能没有trace stack)
 
 ## 实现
-总体上:照抄了 kratos V2 版本的error实现
+总体上:参考了 kratos V2 版本的error实现
 https://go-kratos.dev/docs/component/errors
 
 ### 定义结构体
