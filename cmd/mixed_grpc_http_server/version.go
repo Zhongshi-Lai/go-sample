@@ -1,6 +1,9 @@
 package main
 
-import "log/slog"
+import (
+	"fmt"
+	"log"
+)
 
 var BuildGitCommitHash string
 var BuildTime string
@@ -9,17 +12,18 @@ var BuildGitEmail string
 
 func init() {
 	if BuildGitCommitHash == "" {
-		slog.Warn("BuildInfo-BuildGitCommitHash Empty")
+		log.Println("BuildInfo-BuildGitCommitHash Empty")
 	}
 	if BuildTime == "" {
-		slog.Warn("BuildInfo-BuildTime Empty")
+		log.Println("BuildInfo-BuildTime Empty")
 	}
 	if BuildGitUser == "" {
-		slog.Warn("BuildInfo-BuildGitUser Empty")
+		log.Println("BuildInfo-BuildGitUser Empty")
 	}
 	if BuildGitEmail == "" {
-		slog.Warn("BuildInfo-BuildGitEmail Empty")
+		log.Println("BuildInfo-BuildGitEmail Empty")
 	}
 
-	slog.Info("BuildInfo", "BuildGitCommitHash", BuildGitCommitHash, "BuildTime", BuildTime, "BuildGitUser", BuildGitUser, "BuildGitEmail", BuildGitEmail)
+	buildInfo := fmt.Sprintf("BuildInfo: BuildGitCommitHash=%s BuildTime=%s BuildGitUser=%s BuildGitEmail=%s", BuildGitCommitHash, BuildTime, BuildGitUser, BuildGitEmail)
+	log.Println(buildInfo)
 }
