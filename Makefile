@@ -1,3 +1,18 @@
+
+# buildinfo for all go build
+# just add $(GOFLAGS) to your go build command,it will automaticly add -ldflags "-X main.BuildGitCommitHash=c5efaa7 -X main.BuildTime=2024-01-23T06:56:24Z
+GITHASH := $(shell git rev-parse --short HEAD)
+BUILDTIME := $(shell date -u '+%Y-%m-%dT%H:%M:%SZ')
+GITUSER := $(shell git config user.name)
+GITEMAIL := $(shell git config user.email)
+
+GOLDFLAGS += -X main.BuildGitCommitHash=$(GITHASH)
+GOLDFLAGS += -X main.BuildTime=$(BUILDTIME)
+GOLDFLAGS += -X main.BuildGitUser=$(GITUSER)
+GOLDFLAGS += -X main.BuildGitEmail=$(GITEMAIL)
+GOFLAGS = -ldflags "$(GOLDFLAGS)"
+
+
 #swagger:
 #	@./tools/swagger/swag init --parseDependency --parseInternal
 
@@ -11,19 +26,6 @@
 #checkDependencies:
 #	@go mod graph | gmchart
 
-
-
-
-
-
-#
-##run: build
-##	./mybinary
-#
-
-
-#runserver:
-#	go run cmd/classic_jin_http_server/main.go --conf=./config/test --ginPort=8063
 
 
 di:
@@ -40,14 +42,6 @@ proto_gen:
         --grpc-gateway_opt paths=source_relative \
         $(PROTO_FILE_NAME)
 
-
-# build grpc server with git commit hash
-VERSION := $(shell git rev-parse --short HEAD)
-BUILDTIME := $(shell date -u '+%Y-%m-%dT%H:%M:%SZ')
-
-GOLDFLAGS += -X main.Version=$(VERSION)
-GOLDFLAGS += -X main.BuildTime=$(BUILDTIME)
-GOFLAGS = -ldflags "$(GOLDFLAGS)"
 
 build_grpc:
 	cd cmd/mixed_grpc_http_server && go build -o ../../build/cmd/mixed_grpc_http_server/ $(GOFLAGS) .

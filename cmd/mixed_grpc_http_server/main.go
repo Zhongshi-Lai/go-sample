@@ -9,27 +9,10 @@ import (
 	"runtime"
 	"syscall"
 
-	"log/slog"
-
 	"github.com/spf13/viper"
 )
 
-var Version string
-var BuildTime string
-
 func main() {
-
-	if Version == "" {
-		slog.Warn("mixed_grpc_http_server version info empty")
-	}
-	if BuildTime == "" {
-		slog.Warn("mixed_grpc_http_server build_time info empty")
-	}
-
-	slog.Info(">>>>BuildGitCommitHash<<<<")
-	slog.Info(Version)
-	slog.Info(">>>>BuildTime<<<<")
-	slog.Info(BuildTime)
 
 	confFilePath := os.Getenv("GO-SAMPLE-CONF")
 	if confFilePath == "" {
